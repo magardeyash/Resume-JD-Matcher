@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analysis History — ResumeMatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="brand">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <span>ResumeMatch</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/">Dashboard</a>
+        <a href="/history" class="active">History</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Demo Disclaimer Banner -->
+  <aside class="demo-banner">
+    ⚠️ <strong>Public Portfolio Demo:</strong> Analysis history is kept private to your browser's local storage.
+  </aside>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; text-align: left; margin-bottom: 1.5rem;">
+      <div>
+        <h1 class="page-title">Analysis History</h1>
+        <p class="page-subtitle">Previous resume compatibility analyses stored in this browser session.</p>
+      </div>
+      <div>
+        <button type="button" id="btn-clear-history" class="btn btn-danger-outline" style="display: none;">
+          Clear History
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="history-empty" class="card history-empty" style="display: none;">
+      <svg style="width: 48px; height: 48px; color: var(--text-muted); margin: 0 auto 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem;">No analyses yet</h3>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">You haven't run any resume analyses in this browser yet.</p>
+      <a href="/" class="btn btn-primary" style="width: auto;">Analyze a Resume</a>
+    </div>
+
+    <!-- History Table Container -->
+    <div id="history-table-container" class="card" style="display: none; padding: 0;">
+      <div class="table-responsive">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Resume File</th>
+              <th>Target Job Title</th>
+              <th>Match Score</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

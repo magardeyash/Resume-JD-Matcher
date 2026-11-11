@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analysis Results — ResumeMatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="brand">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <span>ResumeMatch</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/">Dashboard</a>
+        <a href="/history">History</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Demo Disclaimer Banner -->
+  <aside class="demo-banner">
+    ⚠️ <strong>Public Portfolio Demo:</strong> Compatibility scores are approximate relevance estimates, not hiring predictions.
+  </aside>
+
+  <!-- Main Root -->
+  <main class="container" id="results-root" data-analysis-id="{{ analysis_id }}">
+    <!-- Loading State -->
+    <div id="results-loading" style="text-align: center; padding: 4rem 1rem;">
+      <div class="spinner" style="width: 36px; height: 36px; border-color: rgba(79, 70, 229, 0.2); border-top-color: var(--primary);"></div>
+      <p style="margin-top: 1rem; color: var(--text-muted); font-weight: 500;">Loading analysis results...</p>
+    </div>
+
+    <!-- Error Alert -->
+    <div id="results-error" class="alert alert-danger"></div>
+
+    <!-- Content Area -->
+    <div id="results-content" style="display: none;">
+      <div class="page-header" style="text-align: left; margin-bottom: 1.5rem;">
+        <h1 class="page-title" id="res-title">Position Match Analysis</h1>
+        <p class="page-subtitle" id="res-subtitle">Resume analysis</p>
+      </div>
+
+      <!-- Score Hero Card -->
+      <section class="card">
+        <div class="score-hero">
+          <div class="score-chart-container">
+            <svg viewBox="0 0 160 160">
+              <circle class="score-bg-circle" cx="80" cy="80" r="70"></circle>
+              <circle id="score-progress" class="score-progress-circle" cx="80" cy="80" r="70"></circle>
+            </svg>
+            <div class="score-text-overlay">
+              <div class="score-number" id="res-score-number">--</div>
+              <div class="score-percent">/ 100</div>
+            </div>
+          </div>
+          <div>
+            <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Overall Compatibility Score</h2>
+            <p class="score-assessment" id="res-assessment">Analyzing match...</p>
+            <p class="score-disclaimer">
+              * Note: The compatibility score is an approximate text-relevance estimate based on explicit resume content and job description requirements. It is not a prediction of interview selection or hiring success.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Score Breakdown Card -->
+      <section class="card">
+        <h2 class="card-title">Score Breakdown</h2>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+          The final compatibility score is calculated from four deterministic weighted factors:
+        </p>
+        <div class="table-responsive">
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th>Factor</th>
+                <th>Weight</th>
+                <th>Raw Score</th>
+                <th>Contribution</th>
+              </tr>
+            </thead>
+            <tbody id="breakdown-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Skills Cards Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.75rem;">
+        <!-- Matched Skills -->
+        <section class="card" style="margin-bottom: 0;">
+          <h2 class="card-title" style="color: var(--success);">
+            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Matched Skills
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Skills explicitly identified in both resume and job requirements (hover for details):</p>
+          <div class="skills-container" id="matched-skills-list"></div>
+        </section>
+
+        <!-- Missing Skills -->
+        <section class="card" style="margin-bottom: 0;">
+          <h2 class="card-title" style="color: var(--danger);">
+            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Missing Skills
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Important requirements not explicitly found in your resume (an unmentioned skill is not necessarily one you lack):</p>
+          <div class="skills-container" id="missing-skills-list"></div>
+        </section>
+
+        <!-- Partial Matches -->
+        <section class="card" style="margin-bottom: 0;">
+          <h2 class="card-title" style="color: var(--warning);">
+            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            Partial Matches
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Related skills or background needing stronger demonstration in the resume:</p>
+          <div class="skills-container" id="partial-skills-list"></div>
+        </section>
+      </div>
+
+      <!-- Strengths & Weaknesses Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 1.75rem;">
+        <!-- Strengths -->
+        <section class="card" style="margin-bottom: 0;">
+          <h2 class="card-title">Candidate Strengths</h2>
+          <ul class="bullet-list strengths" id="strengths-list"></ul>
+        </section>
+
+        <!-- Weaknesses -->
+        <section class="card" style="margin-bottom: 0;">
+          <h2 class="card-title">Areas for Alignment</h2>
+          <ul class="bullet-list weaknesses" id="weaknesses-list"></ul>
+        </section>
+      </div>
+
+      <!-- Improvement Suggestions -->
+      <section class="card">
+        <h2 class="card-title">Actionable Improvement Suggestions</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Grounding guarantee: Suggestions focus strictly on how to better frame and describe your existing experience, without recommending fabricating qualifications.
+        </p>
+        <ol class="bullet-list suggestions" id="suggestions-list"></ol>
+      </section>
+
+      <!-- Actions Footer -->
+      <div class="actions-footer">
+        <a href="/" class="btn btn-primary" style="width: auto;">
+          Analyze Another Resume
+        </a>
+        <a href="/history" class="btn btn-secondary">
+          View History
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

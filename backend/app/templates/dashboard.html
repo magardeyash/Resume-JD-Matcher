@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumeMatch — AI Resume & Job Description Matcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/" class="brand">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <span>ResumeMatch</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/" class="active">Dashboard</a>
+        <a href="/history">History</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Demo Disclaimer Banner -->
+  <aside class="demo-banner">
+    ⚠️ <strong>Public Portfolio Demo:</strong> Do not upload real personal or sensitive resumes. Stored analyses are identified by UUID and publicly accessible.
+  </aside>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Find out how well your resume matches a job</h1>
+      <p class="page-subtitle">Upload your resume and paste a job description to receive AI-powered compatibility analysis and feedback.</p>
+    </div>
+
+    <!-- Error Alert Box -->
+    <div id="error-alert" class="alert alert-danger" role="alert"></div>
+
+    <form id="analyze-form" novalidate>
+      <!-- Resume Upload Card -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg style="width: 22px; height: 22px; color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+          </svg>
+          1. Upload Your Resume
+        </h2>
+
+        <input type="file" id="resume-input" accept=".pdf,.docx,.txt" style="display: none;">
+
+        <div id="dropzone" class="dropzone">
+          <svg class="dropzone-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+          </svg>
+          <div class="dropzone-text">Drag and drop your resume here, or <span style="color: var(--primary); text-decoration: underline;">browse</span></div>
+          <div class="dropzone-hint">Supports PDF, DOCX, TXT (Max 5 MB)</div>
+        </div>
+
+        <div id="file-preview" class="file-preview" style="display: none;">
+          <div class="file-preview-name">
+            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <span id="file-name">filename.pdf</span>
+          </div>
+          <button type="button" id="btn-remove-file" class="btn-remove">Remove</button>
+        </div>
+      </section>
+
+      <!-- Job Description Card -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg style="width: 22px; height: 22px; color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          2. Target Job Description
+        </h2>
+
+        <div class="form-group">
+          <label for="job-title" class="form-label">Job Title (Optional)</label>
+          <input type="text" id="job-title" class="form-input" placeholder="e.g. Senior Backend Engineer" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label for="jd-text" class="form-label">Job Description <span style="color: var(--danger);">*</span></label>
+          <textarea id="jd-text" class="form-textarea" placeholder="Paste the complete job description, responsibilities, and requirements here..." required maxlength="10000"></textarea>
+          <div class="char-counter">
+            <span id="char-count">0 / 10,000</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Submit Action -->
+      <div style="margin-top: 1rem;">
+        <button type="submit" id="btn-analyze" class="btn btn-primary">
+          Analyze My Resume
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
